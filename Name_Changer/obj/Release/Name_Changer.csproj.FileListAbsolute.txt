@@ -1,7 +1,6 @@
 C:\Users\user\source\repos\Name_Changer\Name_Changer\bin\Release\Name_Changer.exe.config
 C:\Users\user\source\repos\Name_Changer\Name_Changer\bin\Release\Name_Changer.exe
 C:\Users\user\source\repos\Name_Changer\Name_Changer\bin\Release\Name_Changer.pdb
-C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.csprojAssemblyReference.cache
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form1.resources
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form2.resources
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form3.resources

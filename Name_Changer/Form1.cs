@@ -76,19 +76,22 @@ namespace WindowsFormsApp1
             newForm.label1.Text = "번호의 자릿수";
             newForm.label2.Text = "시작할 번호";
 
-            newForm.ShowDialog();
+            DialogResult dialog_value = newForm.ShowDialog();
 
-            num_count = Convert.ToInt32(newForm.input2);
-
-            for (i = 0; i < listView1.Items.Count; i++)
+            if (dialog_value == DialogResult.OK)
             {
-                number = Convert.ToString(num_count);
+                num_count = Convert.ToInt32(newForm.input2);
 
-                number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    number = Convert.ToString(num_count);
 
-                listView1.Items[i].SubItems[1].Text = number + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+                    number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
 
-                num_count++;
+                    listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + number + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+
+                    num_count++;
+                }
             }
         }
 
@@ -205,7 +208,7 @@ namespace WindowsFormsApp1
                 case 0:
                     for (i = 0; i < listView1.Items.Count; i++)
                     {
-                        listView1.Items[i].SubItems[1].Text = Regex.Replace(listView1.Items[i].SubItems[1].Text, @"\D", "");
+                        listView1.Items[i].SubItems[1].Text = Regex.Replace(listView1.Items[i].SubItems[1].Text, @"\D", "") + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
                     }
                     break;
                 case 1:
