@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Security.AccessControl;
 
 namespace WindowsFormsApp1
 {
@@ -30,21 +31,79 @@ namespace WindowsFormsApp1
 
         private void ItemInsert(object sender, DragEventArgs e)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string[] location_list = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             listView1.BeginUpdate();
 
-            foreach (string file in files)
+            int folder_check = 0;
+
+            foreach (string loc in location_list)
             {
-                ListViewItem item = new ListViewItem(Path.GetFileName(file));
+                if ((File.GetAttributes(loc) & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    if (MessageBox.Show("폴더를 추가할려면 YES, 폴더 하위파일을 추가하려면 NO를 눌러주세요.", "YesOrNo", MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        folder_check = 1;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
 
-                item.SubItems.Add(Path.GetFileName(file));
-                item.SubItems.Add(Path.GetDirectoryName(file));
+            foreach (string loc in location_list)
+            {
+                if(folder_check == 1)
+                {
+                    getDirectory(loc);
+                }
+                else
+                {
+                    ListViewItem item = new ListViewItem(Path.GetFileName(loc));
 
-                listView1.Items.Add(item);
+                    item.SubItems.Add(Path.GetFileName(loc));
+                    item.SubItems.Add(Path.GetDirectoryName(loc));
+
+                    listView1.Items.Add(item);
+                }
             }
 
             listView1.EndUpdate();
+        }
+
+        private void getDirectory(string dir)
+        {
+            if ((File.GetAttributes(dir) & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                string[] files = Directory.GetFiles(dir);
+                string[] dirs = Directory.GetDirectories(dir);
+
+                foreach(string dir_2 in dirs)
+                {
+                    getDirectory(dir_2);
+                }
+
+                foreach(string file in files)
+                {
+                    ListViewItem item = new ListViewItem(Path.GetFileName(file));
+
+                    item.SubItems.Add(Path.GetFileName(file));
+                    item.SubItems.Add(Path.GetDirectoryName(file));
+
+                    listView1.Items.Add(item);
+                }
+            }
+            else
+            {
+                ListViewItem item = new ListViewItem(Path.GetFileName(dir));
+
+                item.SubItems.Add(Path.GetFileName(dir));
+                item.SubItems.Add(Path.GetDirectoryName(dir));
+
+                listView1.Items.Add(item);
+            }
         }
 
         private void DragEnter(object sender, DragEventArgs e)
@@ -100,12 +159,23 @@ namespace WindowsFormsApp1
             int i;
             string old_name, new_name;
 
-            for (i = 0; i < listView1.Items.Count; i++)
+            if (MessageBox.Show("실제 파일에 적용하시겠습니까?", "YesOrNo", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                old_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[0].Text;
-                new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    old_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[0].Text;
 
-                File.Move(old_name, new_name);
+                    if ((File.GetAttributes(old_name) & FileAttributes.Directory) == FileAttributes.Directory)
+                    {
+                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
+                        Directory.Move(old_name, new_name);
+                    }
+                    else
+                    {
+                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
+                        File.Move(old_name, new_name);
+                    }
+                }
             }
         }
 
@@ -118,11 +188,14 @@ namespace WindowsFormsApp1
             newForm.label1.Text = "대상 문자열";
             newForm.label2.Text = "변경 문자열";
 
-            newForm.ShowDialog();
+            DialogResult dialog_value = newForm.ShowDialog();
 
-            for (i = 0; i < listView1.Items.Count; i++)
+            if (dialog_value == DialogResult.OK)
             {
-                listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[1].Text.Replace(newForm.input1, newForm.input2);
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[1].Text.Replace(newForm.input1, newForm.input2);
+                }
             }
         }
 
@@ -132,11 +205,14 @@ namespace WindowsFormsApp1
 
             Form3 newForm = new Form3();
 
-            newForm.ShowDialog();
+            DialogResult dialog_value = newForm.ShowDialog();
 
-            for (i = 0; i < listView1.Items.Count; i++)
+            if (dialog_value == DialogResult.OK)
             {
-                listView1.Items[i].SubItems[1].Text = newForm.input1 + listView1.Items[i].SubItems[1].Text;
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    listView1.Items[i].SubItems[1].Text = newForm.input1 + listView1.Items[i].SubItems[1].Text;
+                }
             }
         }
 
@@ -146,11 +222,14 @@ namespace WindowsFormsApp1
 
             Form3 newForm = new Form3();
 
-            newForm.ShowDialog();
+            DialogResult dialog_value = newForm.ShowDialog();
 
-            for (i = 0; i < listView1.Items.Count; i++)
+            if (dialog_value == DialogResult.OK)
             {
-                listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + newForm.input1 + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + newForm.input1 + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+                }
             }
         }
 
@@ -164,17 +243,20 @@ namespace WindowsFormsApp1
             newForm.label1.Text = "시작 문자열";
             newForm.label2.Text = "끝 문자열";
 
-            newForm.ShowDialog();
+            DialogResult dialog_value = newForm.ShowDialog();
 
-            for (i = 0; i < listView1.Items.Count; i++)
+            if (dialog_value == DialogResult.OK)
             {
-                start_str_index = listView1.Items[i].SubItems[1].Text.IndexOf(newForm.input1);
-                end_str_index = listView1.Items[i].SubItems[1].Text.IndexOf(newForm.input2);
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    start_str_index = listView1.Items[i].SubItems[1].Text.IndexOf(newForm.input1);
+                    end_str_index = listView1.Items[i].SubItems[1].Text.IndexOf(newForm.input2);
 
 
-                Console.WriteLine(start_str_index);
-                Console.WriteLine(end_str_index);
-                listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[1].Text.Remove(start_str_index, end_str_index - start_str_index + 1);
+                    Console.WriteLine(start_str_index);
+                    Console.WriteLine(end_str_index);
+                    listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[1].Text.Remove(start_str_index, end_str_index - start_str_index + 1);
+                }
             }
         }
 
@@ -201,22 +283,25 @@ namespace WindowsFormsApp1
 
             newForm.comboBox1.SelectedIndex = 0;
 
-            newForm.ShowDialog();
+            DialogResult dialog_value = newForm.ShowDialog();
 
-            switch (newForm.input1)
+            if (dialog_value == DialogResult.OK)
             {
-                case 0:
-                    for (i = 0; i < listView1.Items.Count; i++)
-                    {
-                        listView1.Items[i].SubItems[1].Text = Regex.Replace(listView1.Items[i].SubItems[1].Text, @"\D", "") + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
-                    }
-                    break;
-                case 1:
-                    for (i = 0; i < listView1.Items.Count; i++)
-                    {
-                        listView1.Items[i].SubItems[1].Text = Regex.Replace(listView1.Items[i].SubItems[1].Text, @"\d", "");
-                    }
-                    break;
+                switch (newForm.input1)
+                {
+                    case 0:
+                        for (i = 0; i < listView1.Items.Count; i++)
+                        {
+                            listView1.Items[i].SubItems[1].Text = Regex.Replace(listView1.Items[i].SubItems[1].Text, @"\D", "") + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+                        }
+                        break;
+                    case 1:
+                        for (i = 0; i < listView1.Items.Count; i++)
+                        {
+                            listView1.Items[i].SubItems[1].Text = Regex.Replace(listView1.Items[i].SubItems[1].Text, @"\d", "");
+                        }
+                        break;
+                }
             }
         }
     }

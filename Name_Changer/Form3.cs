@@ -23,7 +23,8 @@ namespace WindowsFormsApp1
         {
             input1 = textBox1.Text;
 
-            this.Hide();
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }
