@@ -15,7 +15,6 @@ namespace WindowsFormsApp1
         public string input1;
         public string input2;
         public int input3;
-        string name;
 
         public Form2()
         {

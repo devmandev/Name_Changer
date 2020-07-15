@@ -10,4 +10,3 @@ C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.cs
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.exe
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.pdb
-C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.csprojAssemblyReference.cache
