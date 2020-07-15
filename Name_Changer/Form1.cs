@@ -15,7 +15,7 @@ using System.Security.AccessControl;
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
-    {
+    { 
         public Form1()
         {
             InitializeComponent();
@@ -41,7 +41,7 @@ namespace WindowsFormsApp1
             {
                 if ((File.GetAttributes(loc) & FileAttributes.Directory) == FileAttributes.Directory)
                 {
-                    if (MessageBox.Show("폴더를 추가할려면 YES, 폴더 하위파일을 추가하려면 NO를 눌러주세요.", "YesOrNo", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show("폴더를 추가하려면 YES, 폴더의 하위파일을 추가하려면 NO를 눌러주세요.", "하위파일 추가여부 선택", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         folder_check = 1;
                         break;
@@ -134,6 +134,13 @@ namespace WindowsFormsApp1
 
             newForm.label1.Text = "번호의 자릿수";
             newForm.label2.Text = "시작할 번호";
+            newForm.Text = "번호 붙이기";
+            newForm.comboBox1.Items.Add("맨앞에 번호 붙이기");
+            newForm.comboBox1.Items.Add("맨뒤에 번호 붙이기");
+            newForm.comboBox1.Items.Add("폴더별로 맨앞에 번호 붙이기");
+            newForm.comboBox1.Items.Add("폴더별로 맨뒤에 번호 붙이기");
+            
+            newForm.comboBox1.SelectedIndex = 0;
 
             DialogResult dialog_value = newForm.ShowDialog();
 
@@ -141,15 +148,102 @@ namespace WindowsFormsApp1
             {
                 num_count = Convert.ToInt32(newForm.input2);
 
-                for (i = 0; i < listView1.Items.Count; i++)
+                switch (newForm.input3)
                 {
-                    number = Convert.ToString(num_count);
+                    case 0:
+                        for (i = 0; i < listView1.Items.Count; i++)
+                        {
+                            number = Convert.ToString(num_count);
 
-                    number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+                            number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
 
-                    listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + number + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+                            listView1.Items[i].SubItems[1].Text = number + Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
 
-                    num_count++;
+                            num_count++;
+                        }
+                        break;
+                    case 1:
+                        for (i = 0; i < listView1.Items.Count; i++)
+                        {
+                            number = Convert.ToString(num_count);
+
+                            number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                            listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + number + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+
+                            num_count++;
+                        }
+                        break;
+                    case 2:
+                        number = Convert.ToString(num_count);
+
+                        number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                        listView1.Items[0].SubItems[1].Text = number + Path.GetFileNameWithoutExtension(listView1.Items[0].SubItems[1].Text) + Path.GetExtension(listView1.Items[0].SubItems[1].Text);
+
+                        num_count++;
+
+                        for (i = 1; i < listView1.Items.Count; i++)
+                        {
+                            if (listView1.Items[i - 1].SubItems[2].Text == listView1.Items[i].SubItems[2].Text)
+                            {
+                                number = Convert.ToString(num_count);
+
+                                number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                                listView1.Items[i].SubItems[1].Text = number + Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+
+                                num_count++;
+                            }
+                            else
+                            {
+                                num_count = Convert.ToInt32(newForm.input2);
+
+                                number = Convert.ToString(num_count);
+
+                                number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                                listView1.Items[i].SubItems[1].Text = number + Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+
+                                num_count++;
+                            }
+                        }
+                        break; 
+                    case 3:
+                        number = Convert.ToString(num_count);
+
+                        number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                        listView1.Items[0].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[0].SubItems[1].Text) + number + Path.GetExtension(listView1.Items[0].SubItems[1].Text);
+
+                        num_count++;
+
+                        for (i = 1; i < listView1.Items.Count; i++)
+                        {
+                            if (listView1.Items[i - 1].SubItems[2].Text == listView1.Items[i].SubItems[2].Text)
+                            {
+                                number = Convert.ToString(num_count);
+
+                                number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                                listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + number + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+
+                                num_count++;
+                            }
+                            else
+                            {
+                                num_count = Convert.ToInt32(newForm.input2);
+
+                                number = Convert.ToString(num_count);
+
+                                number = number.PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                                listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + number + Path.GetExtension(listView1.Items[i].SubItems[1].Text);
+
+                                num_count++;
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -187,7 +281,8 @@ namespace WindowsFormsApp1
 
             newForm.label1.Text = "대상 문자열";
             newForm.label2.Text = "변경 문자열";
-
+            newForm.Text = "문자열 바꾸기";
+            newForm.comboBox1.Visible = false;
             DialogResult dialog_value = newForm.ShowDialog();
 
             if (dialog_value == DialogResult.OK)
@@ -233,6 +328,7 @@ namespace WindowsFormsApp1
             }
         }
 
+        // 묶인곳 지우기
         private void button7_Click(object sender, EventArgs e)
         {
             int i;
@@ -242,6 +338,8 @@ namespace WindowsFormsApp1
 
             newForm.label1.Text = "시작 문자열";
             newForm.label2.Text = "끝 문자열";
+            newForm.comboBox1.Visible = false;
+            newForm.Text = "묶인곳 지우기";
 
             DialogResult dialog_value = newForm.ShowDialog();
 
@@ -251,7 +349,6 @@ namespace WindowsFormsApp1
                 {
                     start_str_index = listView1.Items[i].SubItems[1].Text.IndexOf(newForm.input1);
                     end_str_index = listView1.Items[i].SubItems[1].Text.IndexOf(newForm.input2);
-
 
                     Console.WriteLine(start_str_index);
                     Console.WriteLine(end_str_index);
@@ -302,6 +399,16 @@ namespace WindowsFormsApp1
                         }
                         break;
                 }
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            int i;
+
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[0].Text;
             }
         }
     }

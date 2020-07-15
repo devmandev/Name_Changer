@@ -41,6 +41,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.button8 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -191,7 +192,8 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.button8, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.button8, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.button10, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(666, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -211,13 +213,23 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(3, 3);
+            this.button8.Location = new System.Drawing.Point(3, 46);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(111, 37);
             this.button8.TabIndex = 8;
             this.button8.Text = "목록 지우기";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(3, 3);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(111, 37);
+            this.button10.TabIndex = 9;
+            this.button10.Text = "원래 이름으로";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // Form1
             // 
@@ -251,6 +263,7 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button10;
     }
 }
 
