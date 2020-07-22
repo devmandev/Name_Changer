@@ -11,6 +11,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Security.AccessControl;
+using System.Globalization;
 
 namespace WindowsFormsApp1
 {
@@ -36,6 +37,8 @@ namespace WindowsFormsApp1
             listView1.BeginUpdate();
 
             int folder_check = 0;
+
+            
 
             foreach (string loc in location_list)
             {
@@ -141,6 +144,8 @@ namespace WindowsFormsApp1
             newForm.comboBox1.Items.Add("폴더별로 맨뒤에 번호 붙이기");
             
             newForm.comboBox1.SelectedIndex = 0;
+
+            newForm.StartPosition = FormStartPosition.CenterParent;
 
             DialogResult dialog_value = newForm.ShowDialog();
 
@@ -283,6 +288,8 @@ namespace WindowsFormsApp1
             newForm.label2.Text = "변경 문자열";
             newForm.Text = "문자열 바꾸기";
             newForm.comboBox1.Visible = false;
+            newForm.StartPosition = FormStartPosition.CenterParent;
+
             DialogResult dialog_value = newForm.ShowDialog();
 
             if (dialog_value == DialogResult.OK)
@@ -300,6 +307,10 @@ namespace WindowsFormsApp1
 
             Form3 newForm = new Form3();
 
+            newForm.comboBox1.Visible = false;
+
+            newForm.StartPosition = FormStartPosition.CenterParent;
+
             DialogResult dialog_value = newForm.ShowDialog();
 
             if (dialog_value == DialogResult.OK)
@@ -316,6 +327,10 @@ namespace WindowsFormsApp1
             int i;
 
             Form3 newForm = new Form3();
+
+            newForm.comboBox1.Visible = false;
+
+            newForm.StartPosition = FormStartPosition.CenterParent;
 
             DialogResult dialog_value = newForm.ShowDialog();
 
@@ -340,6 +355,8 @@ namespace WindowsFormsApp1
             newForm.label2.Text = "끝 문자열";
             newForm.comboBox1.Visible = false;
             newForm.Text = "묶인곳 지우기";
+
+            newForm.StartPosition = FormStartPosition.CenterParent;
 
             DialogResult dialog_value = newForm.ShowDialog();
 
@@ -380,6 +397,8 @@ namespace WindowsFormsApp1
 
             newForm.comboBox1.SelectedIndex = 0;
 
+            newForm.StartPosition = FormStartPosition.CenterParent;
+
             DialogResult dialog_value = newForm.ShowDialog();
 
             if (dialog_value == DialogResult.OK)
@@ -410,6 +429,57 @@ namespace WindowsFormsApp1
             {
                 listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[0].Text;
             }
+        }
+
+        //자릿수 맞추기
+        private void button11_Click(object sender, EventArgs e)
+        {
+            int i, start_index, end_index;
+            string number;
+            
+            Form3 newForm = new Form3();
+
+            newForm.label1.Text = "자릿수";
+
+            newForm.comboBox1.Items.Add("맨 앞 숫자");
+            newForm.comboBox1.Items.Add("맨 뒤 숫자");
+
+            newForm.comboBox1.SelectedIndex = 0;
+
+            newForm.StartPosition = FormStartPosition.CenterParent;
+
+            DialogResult dialog_value = newForm.ShowDialog();
+
+            if (dialog_value == DialogResult.OK)
+            {
+                switch (newForm.input2)
+                {
+                    case 0:
+                        for (i = 0; i < listView1.Items.Count; i++)
+                        {
+                            var matches = Regex.Split(listView1.Items[i].SubItems[1].Text, @"[^0-9]+").Where(s => s != String.Empty).ToArray();
+
+                            start_index = listView1.Items[i].SubItems[1].Text.IndexOf(matches[0]);
+                            end_index = start_index + matches[0].Length;
+                            number = matches[0].PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                            listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[1].Text.Substring(0, start_index) + number + listView1.Items[i].SubItems[1].Text.Substring(end_index);
+                        }
+                        break;
+                    case 1:
+                        for (i = 0; i < listView1.Items.Count; i++)
+                        {
+                            var matches = Regex.Split(listView1.Items[i].SubItems[1].Text, @"[^0-9]+").Where(s => s != String.Empty).ToArray();
+
+                            start_index = listView1.Items[i].SubItems[1].Text.LastIndexOf(matches[matches.Length - 1]);
+                            end_index = start_index + matches[matches.Length - 1].Length;
+                            number = matches[matches.Length - 1].PadLeft(Convert.ToInt32(newForm.input1), '0');
+
+                            listView1.Items[i].SubItems[1].Text = listView1.Items[i].SubItems[1].Text.Substring(0, start_index) + number + listView1.Items[i].SubItems[1].Text.Substring(end_index);
+                        }
+                        break;
+                }
+            }   
         }
     }
 }
