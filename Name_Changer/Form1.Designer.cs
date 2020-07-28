@@ -39,10 +39,11 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -190,12 +191,23 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(3, 304);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(111, 37);
+            this.button11.TabIndex = 9;
+            this.button11.Text = "자릿수 맞추기";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.button8, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.button10, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.button12, 0, 2);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(666, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -233,15 +245,15 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
-            // button11
+            // button12
             // 
-            this.button11.Location = new System.Drawing.Point(3, 304);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(111, 37);
-            this.button11.TabIndex = 9;
-            this.button11.Text = "자릿수 맞추기";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.button12.Location = new System.Drawing.Point(3, 89);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(111, 37);
+            this.button12.TabIndex = 10;
+            this.button12.Text = "목록 정렬";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // Form1
             // 
@@ -277,6 +289,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button12;
     }
 }
 

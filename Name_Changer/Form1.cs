@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Security.AccessControl;
 using System.Globalization;
+using System.Collections;
 
 namespace WindowsFormsApp1
 {
@@ -480,6 +481,80 @@ namespace WindowsFormsApp1
                         break;
                 }
             }   
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            int sortColumn = -1;
+
+            Form4 newForm = new Form4();
+
+            newForm.comboBox1.Items.Add("이름 오름차순");
+            newForm.comboBox1.Items.Add("이름 내림차순");
+            newForm.comboBox1.Items.Add("변경이름 오름차순");
+            newForm.comboBox1.Items.Add("변경이름 내림차순");
+
+            newForm.comboBox1.SelectedIndex = 0;
+
+            newForm.StartPosition = FormStartPosition.CenterParent;
+
+            DialogResult dialog_value = newForm.ShowDialog();
+
+            if (dialog_value == DialogResult.OK)
+            {
+                switch (newForm.input1)
+                {
+                    case 0:
+                        sortColumn = 0;
+                        listView1.Sorting = SortOrder.Ascending;
+                        break;
+                    case 1:
+                        sortColumn = 0;
+                        listView1.Sorting = SortOrder.Descending;
+                        break;
+                    case 2:
+                        sortColumn = 1;
+                        listView1.Sorting = SortOrder.Ascending;
+                        break;
+                    case 3:
+                        sortColumn = 1;
+                        listView1.Sorting = SortOrder.Descending;
+                        break;
+                }
+
+                listView1.Sort();
+                listView1.ListViewItemSorter = new MyListViewComparer(sortColumn, listView1.Sorting);
+            }
+        }
+    }
+
+    class MyListViewComparer : IComparer
+    {
+        private int col;
+        private SortOrder order;
+
+        public MyListViewComparer(int column, SortOrder order)
+        {
+            col = column;
+            this.order = order;
+        }
+
+        public int Compare(object x, object y)
+        {
+            int returnVal = -1;
+
+            returnVal = String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
+
+            Console.WriteLine(((ListViewItem)x).SubItems[col].Text);
+            Console.WriteLine(((ListViewItem)y).SubItems[col].Text);
+            Console.WriteLine(returnVal);
+
+            if (order == SortOrder.Descending)
+            {
+                returnVal *= -1;
+            }
+
+            return returnVal;
         }
     }
 }
