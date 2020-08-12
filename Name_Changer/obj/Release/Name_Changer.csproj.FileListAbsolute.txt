@@ -11,3 +11,15 @@ C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.cs
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.exe
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.pdb
 C:\Users\user\source\repos\Name_Changer\Name_Changer\obj\Release\Name_Changer.csprojAssemblyReference.cache
+C:\Name_Changer\Name_Changer\bin\Release\Name_Changer.exe.config
+C:\Name_Changer\Name_Changer\bin\Release\Name_Changer.exe
+C:\Name_Changer\Name_Changer\bin\Release\Name_Changer.pdb
+C:\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form1.resources
+C:\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form2.resources
+C:\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form3.resources
+C:\Name_Changer\Name_Changer\obj\Release\WindowsFormsApp1.Form4.resources
+C:\Name_Changer\Name_Changer\obj\Release\Name_Changer.Properties.Resources.resources
+C:\Name_Changer\Name_Changer\obj\Release\Name_Changer.csproj.GenerateResource.cache
+C:\Name_Changer\Name_Changer\obj\Release\Name_Changer.csproj.CoreCompileInputs.cache
+C:\Name_Changer\Name_Changer\obj\Release\Name_Changer.exe
+C:\Name_Changer\Name_Changer\obj\Release\Name_Changer.pdb

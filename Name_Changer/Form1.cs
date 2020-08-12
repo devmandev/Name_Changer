@@ -25,10 +25,18 @@ namespace WindowsFormsApp1
             listView1.Columns.Add("OLD NAME");
             listView1.Columns.Add("NEW NAME");
             listView1.Columns.Add("PATH");
+            listView1.Columns.Add("SIZE");
+            listView1.Columns.Add("MODIFY DATE");
+            listView1.Columns.Add("CREATE DATE");
+
+            listView1.Columns[3].Tag = "Number";
 
             listView1.Columns[0].Width = 150;
             listView1.Columns[1].Width = 150;
             listView1.Columns[2].Width = 150;
+            listView1.Columns[3].Width = 150;
+            listView1.Columns[4].Width = 150;
+            listView1.Columns[5].Width = 150;
         }
 
         private void ItemInsert(object sender, DragEventArgs e)
@@ -66,9 +74,13 @@ namespace WindowsFormsApp1
                 else
                 {
                     ListViewItem item = new ListViewItem(Path.GetFileName(loc));
+                    FileInfo info = new FileInfo(loc);
 
                     item.SubItems.Add(Path.GetFileName(loc));
                     item.SubItems.Add(Path.GetDirectoryName(loc));
+                    item.SubItems.Add(info.Length.ToString() + " Bytes");
+                    item.SubItems.Add(info.LastWriteTime.ToString());
+                    item.SubItems.Add(info.CreationTime.ToString());
 
                     listView1.Items.Add(item);
                 }
@@ -493,6 +505,13 @@ namespace WindowsFormsApp1
             newForm.comboBox1.Items.Add("이름 내림차순");
             newForm.comboBox1.Items.Add("변경이름 오름차순");
             newForm.comboBox1.Items.Add("변경이름 내림차순");
+            newForm.comboBox1.Items.Add("파일크기 오름차순");
+            newForm.comboBox1.Items.Add("파일크기 내림차순");
+            newForm.comboBox1.Items.Add("수정시간 오름차순");
+            newForm.comboBox1.Items.Add("수정시간 내림차순");
+            newForm.comboBox1.Items.Add("만든시간 오름차순");
+            newForm.comboBox1.Items.Add("만든시간 내림차순");
+
 
             newForm.comboBox1.SelectedIndex = 0;
 
@@ -520,10 +539,114 @@ namespace WindowsFormsApp1
                         sortColumn = 1;
                         listView1.Sorting = SortOrder.Descending;
                         break;
+                    case 4:
+                        sortColumn = 3;
+                        listView1.Sorting = SortOrder.Ascending;
+                        break;
+                    case 5:
+                        sortColumn = 3;
+                        listView1.Sorting = SortOrder.Descending;
+                        break;
+                    case 6:
+                        sortColumn = 4;
+                        listView1.Sorting = SortOrder.Ascending;
+                        break;
+                    case 7:
+                        sortColumn = 4;
+                        listView1.Sorting = SortOrder.Descending;
+                        break;
+                    case 8:
+                        sortColumn = 5;
+                        listView1.Sorting = SortOrder.Ascending;
+                        break;
+                    case 9:
+                        sortColumn = 5;
+                        listView1.Sorting = SortOrder.Descending;
+                        break;
                 }
 
                 listView1.Sort();
                 listView1.ListViewItemSorter = new MyListViewComparer(sortColumn, listView1.Sorting);
+            }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            Form3 newForm = new Form3();
+
+            newForm.label1.Text = "변경할 이름";
+            newForm.comboBox1.Visible = false;
+
+            DialogResult dialog_value = newForm.ShowDialog();
+
+            if (dialog_value == DialogResult.OK)
+            {
+                int index = listView1.FocusedItem.Index;
+
+                listView1.Items[index].SubItems[1].Text = newForm.input1 + Path.GetExtension(listView1.Items[index].SubItems[1].Text);
+            }
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            int index = listView1.FocusedItem.Index;
+
+            if (index > 0)
+            {
+                var item = listView1.Items[index];
+
+                listView1.Items.Remove(item);
+
+                listView1.Items.Insert(index - 1, item);
+
+                listView1.Items[index - 1].Focused = true;
+            }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            int index = listView1.FocusedItem.Index;
+
+            if (index < listView1.Items.Count - 1)
+            {
+                var item = listView1.Items[index];
+
+                listView1.Items.Remove(item);
+
+                listView1.Items.Insert(index + 1, item);
+
+                listView1.Items[index + 1].Focused = true;
+            }
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            DialogResult dialog_value = fbd.ShowDialog();
+
+            if(dialog_value == DialogResult.OK)
+            {
+                int i;
+                string old_name, new_name;
+
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    old_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[0].Text;
+
+                    listView1.Items[i].SubItems[2].Text = fbd.SelectedPath;
+
+                    if ((File.GetAttributes(old_name) & FileAttributes.Directory) == FileAttributes.Directory)
+                    {
+                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
+                        Directory.Move(old_name, new_name);
+                    }
+                    else
+                    {
+                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
+                        File.Move(old_name, new_name);
+                    }
+                }
             }
         }
     }
@@ -543,16 +666,40 @@ namespace WindowsFormsApp1
         {
             int returnVal = -1;
 
-            returnVal = String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
-
-            Console.WriteLine(((ListViewItem)x).SubItems[col].Text);
-            Console.WriteLine(((ListViewItem)y).SubItems[col].Text);
-            Console.WriteLine(returnVal);
-
-            if (order == SortOrder.Descending)
+            if(((ListViewItem)x).ListView.Columns[col].Tag == null)
             {
-                returnVal *= -1;
+                ((ListViewItem)x).ListView.Columns[col].Tag = "Text";
             }
+
+            if(((ListViewItem)x).ListView.Columns[col].Tag.ToString() == "Number")
+            {
+                double d1 = double.Parse(((ListViewItem)x).SubItems[col].Text.Substring(0, ((ListViewItem)x).SubItems[col].Text.Length - 5));
+                double d2 = double.Parse(((ListViewItem)y).SubItems[col].Text.Substring(0, ((ListViewItem)y).SubItems[col].Text.Length - 5));
+
+                Console.WriteLine(d1);
+                Console.WriteLine(d2);
+
+                returnVal = d1.CompareTo(d2);
+
+                if (order == SortOrder.Descending)
+                {
+                    returnVal *= -1;
+                }
+            }
+            
+            else if(((ListViewItem)x).ListView.Columns[col].Tag.ToString() == "Text")
+            {
+                returnVal = String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
+
+                if (order == SortOrder.Descending)
+                {
+                    returnVal *= -1;
+                }
+            }
+
+            //Console.WriteLine(((ListViewItem)x).SubItems[col].Text);
+            //Console.WriteLine(((ListViewItem)y).SubItems[col].Text);
+            //Console.WriteLine(returnVal);
 
             return returnVal;
         }
