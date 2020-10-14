@@ -270,6 +270,7 @@ namespace WindowsFormsApp1
         {
             int i;
             string old_name, new_name;
+            string error_message = "";
 
             if (MessageBox.Show("실제 파일에 적용하시겠습니까?", "YesOrNo", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -279,14 +280,39 @@ namespace WindowsFormsApp1
 
                     if ((File.GetAttributes(old_name) & FileAttributes.Directory) == FileAttributes.Directory)
                     {
-                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
-                        Directory.Move(old_name, new_name);
+                        new_name = Path.Combine(listView1.Items[i].SubItems[2].Text, listView1.Items[i].SubItems[1].Text);
+
+                        if (Directory.Exists(new_name))
+                        {
+                            error_message += old_name + " -> " + new_name + " 이동 실패 \n";
+                        }
+                        else
+                        {
+                            Directory.Move(old_name, new_name);
+                            listView1.Items[i].SubItems[0].Text = listView1.Items[i].SubItems[1].Text;
+                        }
+                            
+                        
                     }
                     else
                     {
-                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
-                        File.Move(old_name, new_name);
+                        new_name = Path.Combine(listView1.Items[i].SubItems[2].Text, listView1.Items[i].SubItems[1].Text);
+
+                        if (File.Exists(new_name))
+                        {
+                            error_message += old_name + " -> " + new_name + " 이동 실패 \n";
+                        }
+                        else
+                        {
+                            File.Move(old_name, new_name);
+                            listView1.Items[i].SubItems[0].Text = listView1.Items[i].SubItems[1].Text;
+                        }
                     }
+                }
+
+                if (error_message.Length > 0)
+                {
+                    MessageBox.Show(error_message);
                 }
             }
         }
@@ -621,6 +647,7 @@ namespace WindowsFormsApp1
 
         private void button16_Click(object sender, EventArgs e)
         {
+            string error_message = "";
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             DialogResult dialog_value = fbd.ShowDialog();
@@ -632,20 +659,91 @@ namespace WindowsFormsApp1
 
                 for (i = 0; i < listView1.Items.Count; i++)
                 {
-                    old_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[0].Text;
-
+                    //old_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[0].Text;
+                    old_name = Path.Combine(listView1.Items[i].SubItems[2].Text, listView1.Items[i].SubItems[0].Text);
                     listView1.Items[i].SubItems[2].Text = fbd.SelectedPath;
 
                     if ((File.GetAttributes(old_name) & FileAttributes.Directory) == FileAttributes.Directory)
                     {
-                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
-                        Directory.Move(old_name, new_name);
+                        new_name = Path.Combine(listView1.Items[i].SubItems[2].Text, listView1.Items[i].SubItems[1].Text);
+
+                        if (Directory.Exists(new_name))
+                        {
+                            error_message += old_name + " -> " + new_name + " 이동 실패 \n";
+                        }
+                        else
+                        {
+                            Directory.Move(old_name, new_name);
+                        }
                     }
                     else
                     {
-                        new_name = listView1.Items[i].SubItems[2].Text + "\\" + listView1.Items[i].SubItems[1].Text;
-                        File.Move(old_name, new_name);
+                        new_name = Path.Combine(listView1.Items[i].SubItems[2].Text, listView1.Items[i].SubItems[1].Text);
+
+                        if (File.Exists(new_name))
+                        {
+                            error_message += old_name + " -> " + new_name + " 이동 실패 \n";
+                        }
+                        else
+                        {
+                            File.Move(old_name, new_name);
+                        }
                     }
+                }
+
+                if (error_message.Length > 0)
+                {
+                    MessageBox.Show(error_message);
+                }
+            }
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            int i;
+
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text);
+            }
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            int i;
+
+            Form3 newForm = new Form3();
+
+            newForm.label1.Text = "추가할 확장자";
+            newForm.comboBox1.Visible = false;
+
+            DialogResult dialog_value = newForm.ShowDialog();
+
+            if (dialog_value == DialogResult.OK)
+            {
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    listView1.Items[i].SubItems[1].Text = Path.GetFileName(listView1.Items[i].SubItems[1].Text) + "." + newForm.input1;
+                }
+            }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            int i;
+
+            Form3 newForm = new Form3();
+
+            newForm.label1.Text = "변경할 확장자";
+            newForm.comboBox1.Visible = false;
+
+            DialogResult dialog_value = newForm.ShowDialog();
+
+            if (dialog_value == DialogResult.OK)
+            {
+                for (i = 0; i < listView1.Items.Count; i++)
+                {
+                    listView1.Items[i].SubItems[1].Text = Path.GetFileNameWithoutExtension(listView1.Items[i].SubItems[1].Text) + "." + newForm.input1;
                 }
             }
         }

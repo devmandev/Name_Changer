@@ -48,6 +48,9 @@
             this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -209,6 +212,7 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.button19, 0, 9);
             this.tableLayoutPanel3.Controls.Add(this.button8, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.button10, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.button12, 0, 2);
@@ -216,6 +220,8 @@
             this.tableLayoutPanel3.Controls.Add(this.button14, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.button15, 0, 5);
             this.tableLayoutPanel3.Controls.Add(this.button16, 0, 6);
+            this.tableLayoutPanel3.Controls.Add(this.button17, 0, 7);
+            this.tableLayoutPanel3.Controls.Add(this.button18, 0, 8);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(666, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -303,6 +309,36 @@
             this.button16.UseVisualStyleBackColor = true;
             this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(3, 304);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(111, 37);
+            this.button17.TabIndex = 15;
+            this.button17.Text = "확장자 삭제";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(3, 347);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(111, 37);
+            this.button18.TabIndex = 16;
+            this.button18.Text = "확장자 추가";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(3, 390);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(111, 37);
+            this.button19.TabIndex = 17;
+            this.button19.Text = "확장자 변경";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -342,6 +378,9 @@
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
     }
 }
 
