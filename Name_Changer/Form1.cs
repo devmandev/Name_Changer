@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Security.AccessControl;
 using System.Globalization;
 using System.Collections;
+using System.Diagnostics.Tracing;
 
 namespace WindowsFormsApp1
 {
@@ -593,6 +594,7 @@ namespace WindowsFormsApp1
 
                 listView1.Sort();
                 listView1.ListViewItemSorter = new MyListViewComparer(sortColumn, listView1.Sorting);
+                listView1.Sorting = SortOrder.None;
             }
         }
 
@@ -615,7 +617,7 @@ namespace WindowsFormsApp1
 
         private void button14_Click(object sender, EventArgs e)
         {
-            int index = listView1.FocusedItem.Index;
+            int index = listView1.SelectedItems[0].Index;
 
             if (index > 0)
             {
@@ -625,13 +627,13 @@ namespace WindowsFormsApp1
 
                 listView1.Items.Insert(index - 1, item);
 
-                listView1.Items[index - 1].Focused = true;
+                listView1.Items[index - 1].Selected = true;
             }
         }
 
         private void button15_Click(object sender, EventArgs e)
         {
-            int index = listView1.FocusedItem.Index;
+            int index = listView1.SelectedItems[0].Index;
 
             if (index < listView1.Items.Count - 1)
             {
@@ -641,7 +643,7 @@ namespace WindowsFormsApp1
 
                 listView1.Items.Insert(index + 1, item);
 
-                listView1.Items[index + 1].Focused = true;
+                listView1.Items[index + 1].Selected = true;
             }
         }
 
